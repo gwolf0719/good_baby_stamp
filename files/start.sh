@@ -9,8 +9,7 @@ if [ ! -d  "www" ]; then
 	chmod -R 777 www/writable
 	rm -f .gitignore
 	mv files/gitignore .gitignore
-	rm -rf .git
-	git remote remove origin
+
 fi
 
 
