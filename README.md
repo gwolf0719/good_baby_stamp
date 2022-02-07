@@ -14,7 +14,7 @@
 # 使用說明 
 ***0.下載***    
 ```bash  
-git clone git@github.com:gwolf0719/CodeIgniter4_Docker_php_mysql.git
+git clone git@github.com:gwolf0719/good_baby_stamp.git
 ```
 
 ***1.封裝***  
