@@ -25,6 +25,8 @@ docker build -t www .
 ***2.啟動***   
 ```bash   
 docker run -d --name www -p 80:80 -v $PWD:/web   www   
+
+
 ```
 # 安裝後使用注意
 __移除 .gitgnore 內容__   
