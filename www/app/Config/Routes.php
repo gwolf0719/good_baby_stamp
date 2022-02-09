@@ -32,6 +32,9 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/BabyStamp/(:any)','BabyStamp::$1');
+$routes->get('/BabyStamp/(:any)/(:any)','BabyStamp::$1/$2');
+$routes->get('/Api/(:any)','Api::$1');
 
 /*
  * --------------------------------------------------------------------

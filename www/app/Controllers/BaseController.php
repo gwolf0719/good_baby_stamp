@@ -9,6 +9,17 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+
+use App\Libraries\Input;
+use App\Libraries\Api;
+use App\Libraries\Page;
+use App\Libraries\Report;
+use App\Libraries\Arr;
+
+use App\Models\ModDB;
+use App\Models\UsersModel;
+use App\Models\BabysModel;
+use App\Models\CardModel;
 /**
  * Class BaseController
  *
@@ -42,9 +53,25 @@ class BaseController extends Controller
      */
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
+        date_default_timezone_set('Asia/Taipei');
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
+        $this->input = new Input();
+		$this->api = new Api();
+		$this->page = new Page();
+        $this->report = new Report() ;
+		$this->arr = new Arr();
+
+		$this->session = \Config\Services::session();
+		$this->request = \Config\Services::request();
+        $this->db = \Config\Database::connect();
+
+
+        $this->users = new UsersModel();
+        $this->babys = new BabysModel();
+        $this->moddb = new ModDB();
+        $this->card = new CardModel();
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
