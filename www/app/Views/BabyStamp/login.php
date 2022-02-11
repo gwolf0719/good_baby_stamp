@@ -9,6 +9,7 @@
         <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
             <div class="row">
                 <div class="col-lg-6 col-md-8 mx-auto">
+                    <a href="<?=$login_link?>">line login</a>
                     <!-- form card login -->
                     <div class="card rounded shadow shadow-sm">
                         <div class="card-header">
