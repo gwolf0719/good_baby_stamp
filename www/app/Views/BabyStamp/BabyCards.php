@@ -18,26 +18,25 @@
     <div class="main" id="main">
         <div class="container py-5 text-center">
             
-
-            <div class="row" id="babyList">
-                <div class="col-md-3 col-xs-12  p-2" v-on:click="opForm">
+            <div class="row" id="cardList">
+                <div class="col-md-3 col-xs-12  p-2" v-on:click="openForm">
                     <div class="border card  ">
                         <div class="avatar mx-auto bg-white my-5  ratio ratio-1x1 w-50">
                             <img src="./assets/img/plus.png" class="rounded-circle w-100 h-100">
                         </div>
                         <div class="card-body">
-                            <h4 class="mb-4">新增成員</h4>
+                            <h4 class="mb-4">新增集點卡</h4>
                         </div>
                     </div>
                 </div>
 
-                <div class=" col-md-3 col-xs-12  p-2 " v-for="baby in babylist">
-                    <div class="border card rounded-3 " v-on:click="goToCards(baby.babyId)"> 
+                <div class=" col-md-3 col-xs-12  p-2 " v-for="crad in cardList">
+                    <div class="border card rounded-3 " v-on:click="goToCardInfo(crad.cardId)"> 
                         <div class="avatar mx-auto bg-white my-5  ratio ratio-1x1 w-50">
-                            <img :src="baby.babyAvatar" class="rounded-circle  w-100 h-100">
+                            <img src="https://mpng.subpng.com/20180508/etw/kisspng-playing-card-computer-icons-board-game-card-game-card-technology-5af2121953b4d0.1209295515258137853429.jpg" class="rounded-circle  w-100 h-100">
                         </div>
                         <div class="card-body">
-                            <h4 class="mb-4">{{baby.babyDisplayName}}</h4>
+                            <h4 class="mb-4">{{crad.subject}}</h4>
                         </div>
                     </div>
                 </div>
@@ -49,24 +48,27 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="addBbdy" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCard" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">新增乖寶寶</h5>
+            <h5 class="modal-title" id="exampleModalLabel">新增集點卡</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form class="row g-3 needs-validation" novalidate>
               <div class="">
-                <label for="validationCustom01" class="form-label">寶寶暱稱</label>
-                <input type="text" class="form-control"   v-model="babyDisplayName" required>
+                <label for="validationCustom01" class="form-label">集點卡標題</label>
+                <input type="text" class="form-control"   v-model="subject" required>
                 
               </div>
               <div class="">
-                <label for="validationCustom02" class="form-label">顯示頭像</label>
-                <input type="text" class="form-control"   v-model="babyAvatar" required>
-                
+                <label for="validationCustom02" class="form-label">欄數</label>
+                <input type="number" class="form-control"   v-model="col" required>
+              </div>
+              <div class="">
+                <label for="validationCustom02" class="form-label">列數</label>
+                <input type="number" class="form-control"   v-model="row" required>
               </div>
               
             </form>
@@ -82,66 +84,69 @@
     <?=view('BabyStamp/template/last_import')?>
 
     <script>
-        var addBbdy = new bootstrap.Modal(document.getElementById('addBbdy'))
+        var addCard = new bootstrap.Modal(document.getElementById('addCard'))
 
-        var babyList = {
+        var cardList = {
             data(){
                 return {
-                    babylist:<?=json_encode($userBabys)?>
+                    cardList:<?=json_encode($cards)?>
                 }
             },
             methods:{
-                babys(){
+                cards(){
                     axios({
                         method: "post",
-                        url: "/Api/babyList/<?=$user['userId']?>",
+                        url: "/Api/cardList/<?=$baby['babyId']?>",
                         responseType: 'json',
                     })
                     .then(function (response) {
-                        babyListApp.babylist = response.data.data;
+                        console.log(response.data.data);
+                        cardListApp.cardList = response.data.data;
                     })
                     .catch(function (response) {
                         console.log(response);
                     });
                 },
-                goToCards(babyId){
-                    location.href="./BabyStamp/BabyCards/"+babyId
+                openForm(){
+                    addCard.show();
+                },
+                goToCardInfo(cardId){
+                    location.href = '/BabyStamp/BabyCardInfo/'+cardId
                 }
-                ,
-                opForm(){
-                    addBbdy.show();
-                }
+                
             }
         }
 
-        var babyListApp = Vue.createApp(babyList).mount("#babyList");
+        var cardListApp = Vue.createApp(cardList).mount("#cardList");
         
         
         
         const Send = {
             data(){
                 return {
-                    userId:'<?=$user['userId']?>',
-                    babyDisplayName:"Baby"   ,
-                    babyAvatar:"https://i.pinimg.com/originals/1c/62/92/1c6292b7d8e5fe3808d0e36a62359b16.png",
+                    babyId:'<?=$baby['babyId']?>',
+                    subject:'集點卡',
+                    row:2,
+                    col:6
                 }
             },
             methods:{
                 sendData(){
-                    
+                    console.log(this.row)
                     axios({
                         method: "post",
-                        url: "/Api/babyAdd",
+                        url: "/Api/cardAdd",
                         data: Qs.stringify({
-                            userId:this.userId,
-                            babyDisplayName: this.babyDisplayName,
-                            babyAvatar: this.babyAvatar
+                            babyId:this.babyId,
+                            subject:this.subject,
+                            row:this.row,
+                            col:this.col
                         }),
                         responseType: 'json',
                     })
                     .then(function (response) {
-                        addBbdy.hide();
-                        babyListApp.babys();
+                        addCard.hide();
+                        cardListApp.cards();
                     })
                     .catch(function (response) {
                         console.log(response);
@@ -150,7 +155,7 @@
                 
             }
         }
-        Vue.createApp(Send).mount("#addBbdy");
+        Vue.createApp(Send).mount("#addCard");
     </script>
 </body>
 </html>

@@ -12,11 +12,13 @@ class CardModel extends Model{
         $n = 0;
         for($i=1;$i<=$col;$i++){
             for($k=1;$k<=$row;$k++){
+                $res[] = array(
+                    'cardNum'=>$n,
+                    'row'=>$k,
+                    'col'=>$i,
+                    'status'=>0
+                );
                 $n = $n + 1;
-                $res[$n]['cradNum'] =  $n;
-                $res[$n]['row'] =  $k;
-                $res[$n]['col'] =  $i;
-                $res[$n]['status'] =  0;
             }
         }
         return json_encode($res);
@@ -35,13 +37,37 @@ class CardModel extends Model{
         $data = $this->db->table('card')->where('cardId',$cardId)->get()->getRowArray();
         return $data;
     }
+    function chkOnce($cardId){
+        $res = $this->db->table('card')->where('cardId',$cardId)->get()->getRowArray();
+        if($res  == ''){
+            return false;
+        }else{
+            return $res;
+        }
+    }
+    function getList($babyId){
+        $data = $this->db->table('card')->where('babyId',$babyId)->orderBy('updateDatetime','Desc')->get()->getResultArray();
+        return $data;
+    }
     
-    
+    /**
+     * 
+     * 
+     * Stamp
+     * 
+     * 
+     */
 
     function setStampLog($data){
         $data['updateDatetime'] = date("Y-m-d H:i:s");
         $this->db->table('stampLog')->set($data)->insert();
         return $this->db->affectedRows();
-
     }
+    function getStampLog($cardId){
+        $data = $this->db->table('stampLog')->where('cardId',$cardId)
+                ->join('users','stampLog.userId=users.userId')
+                ->orderBy('stampLog.updateDatetime','Desc')->get()->getResultArray();
+        return $data;
+    }
+    
 }

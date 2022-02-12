@@ -11,6 +11,14 @@ class BabysModel extends Model{
         $this->db->table('babys')->insert($data);
         return $this->db->affectedRows();
     }
+    function chkOnce($babyId){
+        $res = $this->db->table('babys')->where('babyId',$babyId)->get()->getRowArray();
+        if($res  == ''){
+            return false;
+        }else{
+            return $res;
+        }
+    }
     function updateOnce($where,$set){
         $this->db->table('babys')->where($where)->set($set)->update();
         return $this->db->affectedRows();

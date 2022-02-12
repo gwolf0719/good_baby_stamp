@@ -80,6 +80,33 @@ class BabyStamp extends BaseController{
         return view('BabyStamp/BabyList',$viewData);
     }
     function BabyCards($babyId){
-        echo $babyId;
+        $baby = $this->babys->chkOnce($babyId);
+        if($baby == false){return view('errors/html/error_404');}
+        $cards = $this->cards->getList($babyId);
+        $viewData = array(
+            'baby'=>$baby,
+            'cards'=>$cards
+        );
+        return view('BabyStamp/BabyCards',$viewData);
+    }
+
+    function BabyCardInfo($cardId){
+        $userId = $this->users->chkLoginStatus();
+        if($userId == false){return redirect()->to('./BabyStamp/login');}
+
+        $user = $this->users->chkOnce($userId);
+        if($user == false){return view('errors/html/error_404');}
+
+        $card = $this->cards->chkOnce($cardId);
+        if($card == false){return view('errors/html/error_404');}
+        $colClass = 'col-'.(12/$card['col']);
+        $viewData = array(
+            'user'=>$user,
+            'card'=>$card,
+            'colClass'=>$colClass,
+            'logs'=>$this->cards->getStampLog($cardId)
+        );
+        return view('BabyStamp/BabyCardInfo',$viewData);
+
     }
 }

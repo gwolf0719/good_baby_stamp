@@ -71,7 +71,7 @@ class BaseController extends Controller
         $this->users = new UsersModel();
         $this->babys = new BabysModel();
         $this->moddb = new ModDB();
-        $this->card = new CardModel();
+        $this->cards = new CardModel();
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
