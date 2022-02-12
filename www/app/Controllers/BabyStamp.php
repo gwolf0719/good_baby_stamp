@@ -6,7 +6,7 @@ class BabyStamp extends BaseController{
     function login(){
         
         // 產生登入連結
-        $redirect_uri = "https://9ddc-114-33-44-37.ngrok.io/BabyStamp/login";
+        $redirect_uri = "https://".$_SERVER['HTTP_HOST']."/BabyStamp/login";
         $client_id = '1656875330';
         $login_link = 'https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id='.$client_id.'&redirect_uri='.$redirect_uri.'&state=12345abcde&scope=profile%20openid&nonce=09876xyz';
         $data = array(
