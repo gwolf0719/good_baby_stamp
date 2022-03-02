@@ -23,7 +23,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost:8080/';
+    // public $baseURL = 'https://24c6-114-33-44-37.ngrok.io/';
+    public $baseURL    = BASE;
 
     /**
      * --------------------------------------------------------------------------
@@ -108,7 +109,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $appTimezone = 'America/Chicago';
+    public $appTimezone = 'Asia/Taipei';
 
     /**
      * --------------------------------------------------------------------------
